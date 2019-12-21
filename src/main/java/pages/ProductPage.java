@@ -10,15 +10,18 @@ import java.util.Set;
 public class ProductPage extends BasePage {
 
     public static String searchName = "";
+    public static String elementCount="";
 
 
-    @FindBy(xpath = "//h1") //"//div[contains(@class, 'headline__header-title')]//*[contains(text(),'Телевизоры')]")
+    @FindBy(xpath = "//h1")
     public WebElement titlePage;
 
-    @FindBy(id = "glpricefrom")
+    //@FindBy(id = "glpricefrom")
+    @FindBy(name = "Цена от")
     public WebElement priceFrom;
 
-    @FindBy(id = "glpriceto")
+    //@FindBy(id = "glpriceto")
+    @FindBy(name = "Цена до")
     public WebElement priceTo;
 
     @FindBy(xpath = "//*[text()='Производитель']")
@@ -27,14 +30,11 @@ public class ProductPage extends BasePage {
     @FindBy(xpath = "//button[@role='listbox']")
     public WebElement countElementOnPage;
 
-    @FindBy(xpath = "//button[@role='listbox']") //"//div[@class='select__item select__item_selected_yes']//span") //
+    @FindBy(xpath = "//button[@role='listbox']")
     public WebElement selectedCount;
 
     @FindBy(id = "header-search")
     public WebElement searchLine;
-
-    @FindBy(xpath = "//div[@class='n-snippet-list n-snippet-list_type_vertical metrika b-zone b-spy-init b-spy-events i-bem metrika_js_inited snippet-list_js_inited b-spy-init_js_inited b-zone_js_inited']")
-    public WebElement searchList;
 
 
     public ProductPage(){
@@ -50,7 +50,7 @@ public class ProductPage extends BasePage {
     }
 
     public void fillField (String fieldName, String value){
-        FieldNames arg;
+        /*FieldNames arg;
         arg = FieldNames.valueOf(fieldName);
         switch (arg) {
             case glpricefrom:
@@ -61,41 +61,64 @@ public class ProductPage extends BasePage {
                 break;
             default:
                 throw new AssertionError("Поле '" + fieldName + "' не объявлено на странице.");
+        }*/
+        switch (fieldName) {
+            case "Цена от":
+                fillField(priceFrom, value);
+                break;
+            case "Цена до":
+                fillField(priceTo, value);
+                break;
+            default:
+                throw new AssertionError("Поле '" + fieldName + "' не объявлено на странице.");
         }
     }
 
     public void selectElementCount(String value){
 
         countElementOnPage.click();
-        countElementOnPage.findElement(By.xpath("//span[(@class='select__text')][text()='"+value+"']//parent::div")).click();
+        BaseSteps.getDriver().findElement(By.xpath("//span[(@class='select__text')][text()='"+value+"']//parent::div")).click();
+        elementCount = value;
+
     }
 
     public void getSearchElement(){
-        //Wait<WebDriver> wait = new WebDriverWait(BaseSteps.getDriver(), 10, 1000);
-        //wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='n-filter-applied-results metrika b-zone i-bem n-filter-applied-results_js_inited b-zone_js_inited']")));
-
-        //wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='n-filter-applied-results metrika b-zone i-bem n-filter-applied-results_js_inited b-zone_js_inited']")));
-        //wait.until(ExpectedConditions.elementToBeSelected(By.xpath("//div[@class='n-filter-applied-results metrika b-zone i-bem n-filter-applied-results_js_inited b-zone_js_inited']")));
-
-        //wait.until(ExpectedConditions.visibilityOf(searchList.findElement(By.xpath("//*[@class='n-snippet-list n-snippet-list_type_vertical metrika b-zone b-spy-init b-spy-events i-bem metrika_js_inited snippet-list_js_inited b-spy-init_js_inited b-zone_js_inited']/descendant::a[2]/img"))));
-        //wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@class='n-snippet-list n-snippet-list_type_vertical metrika b-zone b-spy-init b-spy-events i-bem metrika_js_inited snippet-list_js_inited b-spy-init_js_inited b-zone_js_inited']/descendant::a[2]/img")));
-
-
-
-        fillField(searchLine, titlePage.findElement(By.xpath("//*[@class='n-snippet-list n-snippet-list_type_vertical metrika b-zone b-spy-init b-spy-events i-bem metrika_js_inited snippet-list_js_inited b-spy-init_js_inited b-zone_js_inited']/descendant::h3[1]/a")).getText());
-        fillField(searchLine, titlePage.findElement(By.xpath("//*[@class='n-snippet-list n-snippet-list_type_vertical metrika b-zone b-spy-init b-spy-events i-bem metrika_js_inited snippet-list_js_inited b-spy-init_js_inited b-zone_js_inited']/descendant::h3[1]/a")).getText());
-
-        ProductPage.searchName = searchLine.getText();
+        fillField(searchLine, BaseSteps.getDriver().findElement(By.xpath("//*[contains(@class, 'n-snippet-list')]/descendant::h3[1]/a")).getText());
+        searchName = BaseSteps.getDriver().findElement(By.xpath("//*[contains(@class, 'n-snippet-list')]/descendant::h3[1]/a")).getText();
+        /*fillField(searchLine, BaseSteps.getDriver().findElement(By.xpath("//*[@class='n-snippet-list n-snippet-list_type_vertical metrika b-zone b-spy-init b-spy-events i-bem metrika_js_inited snippet-list_js_inited b-spy-init_js_inited b-zone_js_inited']/descendant::h3[1]/a")).getText());
+        searchName = BaseSteps.getDriver().findElement(By.xpath("//*[@class='n-snippet-list n-snippet-list_type_vertical metrika b-zone b-spy-init b-spy-events i-bem metrika_js_inited snippet-list_js_inited b-spy-init_js_inited b-zone_js_inited']/descendant::h3[1]/a")).getText();//searchLine.getText();*/
     }
 
     public void searchElementClick(){
         Set<String> oldWindowsSet = BaseSteps.getDriver().getWindowHandles();
-        titlePage.findElement(By.xpath("//*[@class='n-snippet-list n-snippet-list_type_vertical metrika b-zone b-spy-init b-spy-events i-bem metrika_js_inited snippet-list_js_inited b-spy-init_js_inited b-zone_js_inited']/descendant::h3[1]/a")).click();
+        BaseSteps.getDriver().findElement(By.xpath("//*[contains(@class, 'n-snippet-list')]/descendant::h3[1]/a")).click();
         Set<String> newWindowsSet = BaseSteps.getDriver().getWindowHandles();
         newWindowsSet.removeAll(oldWindowsSet);
         String newWindowHandle = newWindowsSet.iterator().next();
         BaseSteps.getDriver().switchTo().window(newWindowHandle);
     }
+
+    public int checkElementCount(){
+        int i = 0;
+        String str;
+        do{
+            i++;
+            str = Integer.toString(i);
+        }
+        while (isSearchListElementPresent(str));
+        i--;
+        return i;
+    }
+
+    public boolean isSearchListElementPresent(String num) {
+        try {
+            BaseSteps.getDriver().findElement(By.xpath("//*[contains(@class, 'n-snippet-list')]/descendant::h3[" + num + "]/a"));
+            return true;
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
 
     public enum FieldNames {
         glpricefrom,

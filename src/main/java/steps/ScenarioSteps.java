@@ -57,27 +57,27 @@ public class ScenarioSteps {
     }
 
     @Then("^Проверяется, что колличество элементов поиска на странице :\"(.*)\"$")
-    public void checkElementCount(String value){
+    public void checkElementCount(String value) throws InterruptedException {
         tvSteps.stepCheckSelectedCount(value);
     }
 
     @When("Получено название первого элемента поиска на странице")
-    public void getFirstName(){
+    public void getFirstName(){//throws InterruptedException{
         tvSteps.stepGetSearchElement();
     }
 
-    @Then("Поиск")
+    @Then("Поиск первого элемента с списке")
     public void searchAndCheck(){
         tvSteps.stepSearchAndCheck();
 
     }
 
-    @Then("Клик")
+    @Then("Переход на страничку первого элемента в списке")
     public void firstNameClick(){
         tvSteps.stepSearchElementClick();
     }
 
-    @Then("Проверка")
+    @Then("Проверка соответствия наззвания продукта запомненному значению")
     public void check(){
         searchSteps.stepCheckPageTitle(ProductPage.searchName);
 

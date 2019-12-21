@@ -18,8 +18,8 @@ public class MainYandexPage extends BasePage {
     }
 
     public void selectMainMenu(String menuItem){
-        mainMenu.findElement(By.xpath("//div[contains(@class, 'home-tabs')]//*[contains(text(),'"+menuItem +"')]")).click();
-
+        //mainMenu.findElement(By.xpath("//div[contains(@class, 'home-tabs')]//*[contains(text(),'"+menuItem +"')]")).click();
+        BaseSteps.getDriver().findElement(By.xpath("//div[contains(@class, 'home-tabs')]//*[contains(text(),'"+menuItem +"')]")).click();
     }
 }
 //-//div[contains(@class, 'home-tabs')]//*[contains(text(),'Маркет')]

@@ -1,5 +1,6 @@
 package steps;
 
+import org.openqa.selenium.NoSuchElementException;
 import pages.ProductPage;
 import ru.yandex.qatools.allure.annotations.Step;
 
@@ -43,11 +44,20 @@ public class ProductSteps {
     }
 
     @Step("выбраное колличество элементов на странице равно: {0}")
-    public void stepCheckSelectedCount(String expectedCount){
+    public void stepCheckSelectedCount(String expectedCount) throws InterruptedException {
         ProductPage tvPage = new ProductPage();
-        String actualCount = tvPage.selectedCount.getText();
+        Thread.sleep(1000);
+        String actualCount;
+        try {
+            actualCount = tvPage.selectedCount.getText();
+    } catch ( NoSuchElementException e) {
+            actualCount = ProductPage.elementCount;
+    }
+        String expCount = Integer.toString(tvPage.checkElementCount());
+        printTextToReport("Количество найденных элементов на странице: " + expCount);
+        printTextToReport("Выбранное количество для отображения: " + actualCount);
         assertTrue(String.format("Колличество равно [%s]. Ожидалось - [%s]",
-                actualCount, expectedCount), actualCount.contains(expectedCount));
+                actualCount, expCount), actualCount.contains(expectedCount));
     }
 
     @Step("заполнение строки поиска названием первого элемента в списке")
@@ -55,17 +65,25 @@ public class ProductSteps {
 
         ProductPage tvPage = new ProductPage();
         tvPage.getSearchElement();
+        printTextToReport(ProductPage.searchName);
     }
 
     @Step("поиск первого элемента")
     public void stepSearchAndCheck(){
         new ProductPage().searchLine.click();
+        printTextToReport(ProductPage.searchName);
     }
 
-    @Step("клик по найденному элементу")
+    @Step("переход на страничку найденного элемента")
     public void stepSearchElementClick(){
         ProductPage tvPage = new ProductPage();
         tvPage.searchElementClick();
+        printTextToReport(ProductPage.searchName);
+
+    }
+
+    @Step("{0}")
+    public void printTextToReport(String printText){
 
     }
 

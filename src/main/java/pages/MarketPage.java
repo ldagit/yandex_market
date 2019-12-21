@@ -16,7 +16,8 @@ public class MarketPage extends BasePage {
     }
 
     public void selectMarketMenu(String menuItem){
-        marketMenu.findElement(By.xpath("//*[contains(@data-bem, '"+menuItem+"')]")).click();
+       // marketMenu.findElement(By.xpath("//*[contains(@data-bem, '"+menuItem+"')]")).click();
+        BaseSteps.getDriver().findElement(By.xpath("//*[contains(@data-bem, '"+menuItem+"')]")).click();
     }
 
 }
