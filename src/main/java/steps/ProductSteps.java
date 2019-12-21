@@ -1,6 +1,11 @@
 package steps;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.ProductPage;
 import ru.yandex.qatools.allure.annotations.Step;
 
@@ -46,7 +51,13 @@ public class ProductSteps {
     @Step("выбраное колличество элементов на странице равно: {0}")
     public void stepCheckSelectedCount(String expectedCount) throws InterruptedException {
         ProductPage tvPage = new ProductPage();
-        Thread.sleep(1000);
+        //Thread.sleep(1000);
+
+        Wait<WebDriver> wait = new WebDriverWait(BaseSteps.getDriver(), 10, 1000);
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//div[contains(@class, 'content preloadable')]//div[contains(@class, 'visible preloadable')]//div")));
+
+
+
         String actualCount;
         try {
             actualCount = tvPage.selectedCount.getText();
